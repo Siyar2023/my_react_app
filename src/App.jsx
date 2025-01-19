@@ -1,12 +1,12 @@
-
 import './App.css';
-import {useState} from "react"; // Importing the App specific CSS file
+import { useState, useEffect } from "react"; // Importing useState and useEffect hooks
 
 function App() {
     const [tasks, setTasks] = useState([]); // State to hold tasks
     const [newTask, setNewTask] = useState(''); // State for new task input
     const [editIndex, setEditIndex] = useState(null); // Index of the task being edited
     const [editTask, setEditTask] = useState(''); // The edited task
+    const [currentDateTime, setCurrentDateTime] = useState(''); // State for current date and time
 
     // Function to handle adding a new task
     const addTask = () => {
@@ -35,6 +35,17 @@ function App() {
         setEditIndex(null); // Exit edit mode
         setEditTask('');
     };
+
+    // Function to update the current date and time
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const now = new Date();
+            setCurrentDateTime(now.toLocaleString()); // Set current date and time in state
+        }, 1000); // Update every second
+
+        // Cleanup the interval when the component is unmounted
+        return () => clearInterval(intervalId);
+    }, []);
 
     return (
         <div className="App">
@@ -73,6 +84,11 @@ function App() {
                     </li>
                 ))}
             </ul>
+
+            {/* Display current date and time */}
+            <div className="date-time">
+                {currentDateTime}
+            </div>
         </div>
     );
 }
